@@ -1,0 +1,51 @@
+<!-- WatchGuard Firebox: extract flags + duration (local independent) -->
+
+<decoder name="watchguard-firebox-3000-base">
+  <prematch>firewall: msg_id="3000-</prematch>
+</decoder>
+
+<!-- WG06 / 3000-0151: campos básicos -->
+
+<decoder name="watchguard-fw3000-core-0151-basic-local">
+  <parent>watchguard-fw-3000</parent>
+  <prematch>firewall: msg_id="3000-0151"</prematch>
+  <regex type="pcre2">msg_id="(3000-0151)"\s+(Allow|Deny)\b.*?\b(tcp|udp|icmp)\b\s+(\d{1,3}(?:\.\d{1,3}){3})\s+(\d{1,3}(?:\.\d{1,3})><{1,3})   {3})\s+(\d+)\s+(\d+)\b</regex>
+  <order>id, action, protocol, srcip, dstip, srcport, dstport</order>
+</decoder>
+
+<decoder name="watchguard-firebox-3000-fields">
+  <prematch>watchguard-firebox-3000-base</prematch>
+  <regex type="pcre2">msg_id="([0-9]{4}-[0-9]{4})"\s+(\w+)\s+.*?\s+(tcp|udp|icmp)\s+(\d{1,3}(?:\.\d{1,3}){3})\s+(\d{1,3}(?:\.\d{1,3}><d{1,3}){3})\s+(\d+)\s+(\d+)</regex>
+  <order>id, action, protocol, srcip, dstip, srcport, dstport</order>
+</decoder>
+
+<!-- Core fields for msg_id 0148/0149 (tienen dos números extra tras protocolo) -->
+
+<decoder name="watchguard-fw3000-core-0148-0149-local">
+  <parent>watchguard-fw-3000</parent>
+  <regex type="pcre2">msg_id="(3000-0148|3000-0149)"\s+(Allow|Deny)\s+.*?\s+(tcp|udp|icmp)\s+\d+\s+\d+\s+(\d{1,3}(?:\.\d{1,3}){3})\s><{3})\s+(\d{1,3}(?:\.\d{1,3}){3})\s+(\d+)\s+(\d+)</regex>
+  <order>id,action,protocol,srcip,dstip,srcport,dstport</order>
+</decoder>
+
+<!-- Core fields for msg_id 0151 (va directo a IPs) -->
+<decoder name="watchguard-fw3000-core-0151-local">
+  <parent>watchguard-fw-3000</parent>
+  <regex type="pcre2">msg_id="(3000-0151)"\s+(Allow|Deny)\s+.*?\s+(tcp|udp|icmp)\s+(\d{1,3}(?:\.\d{1,3}){3})\s+(\d{1,3}(?:\.\d{1,3})><{1,3}){3})\s+(\d+)\s+(\d+)</regex>
+  <order>id,action,protocol,srcip,dstip,srcport,dstport</order>
+</decoder>
+
+<!--ultimos mas especificos-->
+
+<!-- WG06 / 3000-0151: flags + duration -->
+<decoder name="watchguard-fw3000-0151-flags-duration-local">
+  <prematch>msg_id="3000-0151"</prematch>
+  <regex type="pcre2">flags="([^"]+)"\s+duration="([^"]+)"</regex>
+  <order>watchguard.flags,watchguard.duration</order>
+</decoder>
+
+<!-- WG06 / 3000-0151: pkts + bytes -->
+<decoder name="watchguard-fw3000-0151-pkts-bytes-local">
+  <prematch>msg_id="3000-0151"</prematch>
+  <regex type="pcre2">sent_pkts="([^"]+)"\s+rcvd_pkts="([^"]+)"\s+sent_bytes="([^"]+)"\s+rcvd_bytes="([^"]+)"</regex>
+  <order>watchguard.sent_pkts,watchguard.rcvd_pkts,watchguard.sent_bytes,watchguard.rcvd_bytes</order>
+</decoder>
