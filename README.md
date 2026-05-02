@@ -9,6 +9,9 @@ Este proyecto consiste en la implementación de un entorno SIEM utilizando Wazuh
 - Switches Cisco
 - Syslog
 - Linux
+- Visual Code Studio
+- dashboards
+- Telegram
 
 ## Funcionalidades
 - Integración de firewall y switches
