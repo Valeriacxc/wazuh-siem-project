@@ -1,0 +1,376 @@
+<group name="watchguard,firebox,wg01,local,">
+
+  <!--Tráfico permitido base 3000-0148-->
+  <rule id="130001" level="0"  noalert="1">
+    <decoded_as>watchguard-fw-3000</decoded_as>
+    <match>msg_id="3000-0148" Allow</match>
+    <description>WatchGuard - Allow traffic (3000-0148)</description>
+    <group>watchguard,firebox,allow,traffic_log</group>
+  </rule>
+
+  <!--Base: Tráfico denegado (3000-0148)-->
+  <rule id="130002" level="0"  noalert="1">
+    <decoded_as>watchguard-fw-3000</decoded_as>
+    <match>msg_id="3000-0148" Deny</match>
+    <description>WG 3000-0148 Deny (clasificación)</description>
+    <group>watchguard,firebox,deny,traffic_log</group>
+  </rule>
+
+  <!--ALLOW Web HTTP (puerto 80)-->
+  <rule id="130210" level="0" noalert="1">
+    <if_sid>130001</if_sid>
+    <dstport>80</dstport>
+    <description>WatchGuard - ALLOW Web (HTTP) (3000-0148)</description>
+    <group>watchguard,firebox,allow,web,http</group>
+  </rule>
+  
+   <!--ALLOW Web HTTPS (puerto 443)-->
+  <rule id="130211" level="0" noalert="1">
+    <if_sid>130001</if_sid>
+    <dstport>443</dstport>
+    <description>WatchGuard - ALLOW Web (HTTPS) (3000-0148)</description>
+    <group>watchguard,firebox,allow,web,https</group>
+  </rule>
+
+  <!--ALLOW Web HTTP saliente desde red interna (10/8)-->
+  <rule id="130212" level="0" noalert="1">
+    <if_sid>130210</if_sid>
+    <srcip>10.0.0.0/8</srcip>
+    <description>WatchGuard - ALLOW Web OUTBOUND from internal (HTTP)</description>
+    <group>watchguard,firebox,allow,web,outbound,internal</group>
+  </rule>
+
+  <!--ALLOW Web HTTPS saliente desde red interna (10/8)-->
+  <rule id="130213" level="0" noalert="1">
+    <if_sid>130211</if_sid>
+    <srcip>10.0.0.0/8</srcip>
+    <description>WatchGuard - ALLOW Web OUTBOUND from internal (HTTPS)</description>
+    <group>watchguard,firebox,allow,web,outbound,internal</group>
+  </rule>
+
+   <!--ALLOW FTP (puerto 21)-->
+  <rule id="130230" level="0" noalert="1">
+    <if_sid>130001</if_sid>
+    <dstport>21</dstport>
+    <description>WatchGuard - ALLOW FTP (3000-0148)</description>
+    <group>watchguard,firebox,allow,ftp</group>
+  </rule>
+
+  <!--ALLOW SSH (puerto 22) con alerta baja-->
+  <rule id="130240" level="0" noalert="1">
+    <if_sid>130001</if_sid>
+    <dstport>22</dstport>
+    <description>WatchGuard - ALLOW SSH (3000-0148)</description>
+    <group>watchguard,firebox,allow,ssh</group>
+  </rule>
+
+  <!--ALLOW RDP (puerto 3389) con alerta media-->
+  <rule id="130250" level="0" noalert="1">
+    <if_sid>130001</if_sid>
+    <dstport>3389</dstport>
+    <description>WatchGuard - ALLOW RDP (3000-0148)</description>
+    <group>watchguard,firebox,allow,rdp</group>
+  </rule>
+
+   <!--ALLOW SMB (puerto 445) con alerta media-->
+  <rule id="130251" level="0" noalert="1">
+    <if_sid>130001</if_sid>
+    <dstport>445</dstport>
+    <description>WatchGuard - ALLOW SMB (3000-0148)</description>
+    <group>watchguard,firebox,allow,smb</group>
+  </rule>
+
+  <!-- set de categorización nueva Deny -->
+  <!--DENY Web HTTP (puerto 80)-->
+  <rule id="130110" level="0" noalert="1">
+    <if_sid>130002</if_sid>
+    <match> 80 flags=</match>
+    <description>WatchGuard - DENY Web (HTTP) (dstport 80) (3000-0148)</description>
+    <group>watchguard,firebox,deny,web,http</group>
+  </rule>
+
+  <!--DENY Web HTTPS (puerto 443)-->
+  <rule id="130111" level="0" noalert="1">
+    <if_sid>130002</if_sid>
+    <match> 443 flags=</match>
+    <description>WatchGuard - DENY Web (HTTPS) (dstport 443) (3000-0148)</description>
+    <group>watchguard,firebox,deny,web,https</group>
+  </rule>
+
+   <!--DENY DNS (puerto 53)-->
+  <rule id="130120" level="7">
+    <if_sid>130002</if_sid>
+    <match> 53 flags=</match>
+    <description>WatchGuard - DENY DNS (dstport 53) (3000-0148)</description>
+    <group>watchguard,firebox,deny,dns</group>
+  </rule>
+
+  <!--DENY FTP (puerto 21)-->
+  <rule id="130130" level="6">
+    <if_sid>130002</if_sid>
+    <match> 21 flags=</match>
+    <description>WatchGuard - DENY FTP (dstport 21) (3000-0148)</description>
+    <group>watchguard,firebox,deny,ftp</group>
+  </rule>
+
+  <!--DENY SSH (puerto 22) crítico-->
+  <rule id="130140" level="8">
+    <if_sid>130002</if_sid>
+    <match> 22 flags=</match>
+    <description>WatchGuard - DENY SSH (dstport 22) (3000-0148)</description>
+    <group>watchguard,firebox,deny,ssh</group>
+  </rule>
+
+   <!--DENY RDP (puerto 3389) muy crítico-->
+  <rule id="130150" level="10">
+    <if_sid>130002</if_sid>
+    <match> 3389 flags=</match>
+    <description>WatchGuard - DENY RDP (dstport 3389) (3000-0148)</description>
+    <group>watchguard,firebox,deny,rdp</group>
+  </rule>
+
+  <!--DENY SMB (puerto 445) muy crítico-->
+  <rule id="130151" level="10">
+    <if_sid>130002</if_sid>
+    <match> 445 flags=</match>
+    <description>WatchGuard - DENY SMB (dstport 445) (3000-0148)</description>
+    <group>watchguard,firebox,deny,smb</group>
+  </rule>
+
+  <!--DENY HTTP outbound interno (10/8)-->
+  <rule id="130116" level="5">
+    <if_sid>130110</if_sid>
+    <srcip>10.0.0.0/8</srcip>
+    <description>WatchGuard - DENY Web OUTBOUND internal (10/8) (HTTP)</description>
+    <group>watchguard,firebox,deny,web,outbound,internal</group>
+  </rule>
+
+  <!--DENY HTTP outbound interno (172.16/12)-->
+  <rule id="130117" level="5">
+    <if_sid>130110</if_sid>
+    <srcip>172.16.0.0/12</srcip>
+    <description>WatchGuard - DENY Web OUTBOUND internal (172.16/12) (HTTP)</description>
+    <group>watchguard,firebox,deny,web,outbound,internal</group>
+  </rule>
+
+  <!--DENY HTTP outbound interno (192.168/16)-->
+  <rule id="130118" level="5">
+    <if_sid>130110</if_sid>
+    <srcip>192.168.0.0/16</srcip>
+    <description>WatchGuard - DENY Web OUTBOUND internal (192.168/16) (HTTP)</description>
+    <group>watchguard,firebox,deny,web,outbound,internal</group>
+  </rule>
+
+  <!--DENY HTTPS outbound interno (10/8)-->
+  <rule id="130119" level="5">
+    <if_sid>130111</if_sid>
+    <srcip>10.0.0.0/8</srcip>
+    <description>WatchGuard - DENY Web OUTBOUND internal (10/8) (HTTPS)</description>
+    <group>watchguard,firebox,deny,web,outbound,internal</group>
+  </rule>
+
+   <!--DENY HTTPS outbound interno (172.16/12)-->
+  <rule id="130123" level="5">
+    <if_sid>130111</if_sid>
+    <srcip>172.16.0.0/12</srcip>
+    <description>WatchGuard - DENY Web OUTBOUND internal (172.16/12) (HTTPS)</description>
+    <group>watchguard,firebox,deny,web,outbound,internal</group>
+  </rule>
+
+  <!--DENY HTTPS outbound interno (192.168/16)-->
+  <rule id="130122" level="5">
+    <if_sid>130111</if_sid>
+    <srcip>192.168.0.0/16</srcip>
+    <description>WatchGuard - DENY Web OUTBOUND internal (192.168/16) (HTTPS)</description>
+    <group>watchguard,firebox,deny,web,outbound,internal</group>
+  </rule>
+
+  <!--DENY ICMP (ping bloqueado)-->
+  <rule id="130003" level="0" noalert="1">
+    <if_sid>130002</if_sid>
+    <match> icmp </match>
+    <description>WG ICMP Deny (clasificación)</description>
+    <group>watchguard,firebox,deny,icmp</group>
+  </rule>
+
+   <!--DENY ICMP con usuario (AuthPoint)-->
+  <rule id="130004" level="0" noalert="1">
+    <if_sid>130003</if_sid>
+    <match>src_user="</match>
+    <description>WG ICMP Deny con src_user (clasificación)</description>
+    <group>watchguard,firebox,deny,icmp,user</group>
+  </rule>
+
+  <!--DENY Unhandled External Packet (posible escaneo)-->
+  <rule id="130005" level="0" noalert="1">
+    <if_sid>130002</if_sid>
+    <match>Unhandled External Packet</match>
+    <description>WatchGuard - Unhandled External Packet denied (possible external scan) (3000-0148)</description>
+    <group>watchguard,firebox,deny,external_scan</group>
+  </rule>
+
+  <rule id="130006" level="12" frequency="30" timeframe="300">
+    <if_matched_sid>130005</if_matched_sid>
+    <same_source_ip/>
+    <description>WatchGuard - Possible external scan: 30+ Unhandled External Packets from same IP in 5 minutes</description>
+    <group>watchguard,firebox,deny,external_scan,correlation</group>
+  </rule>
+
+  <!--Base: Denegación por AppControl (3000-0149)-->
+  <rule id="130010" level="0"  noalert="1">
+    <decoded_as>watchguard-fw-3000</decoded_as>
+     <match>msg_id="3000-0149"</match>
+    <match> Deny </match>
+    <description>WatchGuard - Deny traffic (3000-0149)</description>
+    <group>watchguard,firebox,deny,appcontrol</group>
+  </rule>
+
+  <!--AppControl: Bloqueo de TikTok-->
+  <rule id="130013" level="0" noalert="1">
+    <if_sid>130010</if_sid>
+    <match>app_name="TikTok"</match>
+    <description>WatchGuard - AppControl Social: TikTok blocked (3000-0149)</description>
+    <group>watchguard,firebox,appcontrol,deny,social_media</group>
+  </rule>
+
+  <!--AppControl: Bloqueo de Facebook-->
+  <rule id="130014" level="0" noalert="1">
+    <if_sid>130010</if_sid>
+    <match>app_name="Facebook"</match>
+    <description>WatchGuard - AppControl Social: Facebook blocked (3000-0149)</description>
+    <group>watchguard,firebox,appcontrol,deny,social_media</group>
+  </rule>
+
+   <!--Reglas vpn -->
+  <!--Autenticación: bloqueo de intentos fallidos (3000-0173)-->
+  <rule id="130030" level="8">
+    <decoded_as>watchguard-fw-3000</decoded_as>
+    <field name="msg">block failed logins</field>
+    <description>WatchGuard - Authentication blocked failed logins (3000-0173)</description>
+    <group>watchguard,authentication,failed_login</group>
+  </rule>
+
+  <!--Posible fuerza bruta: 10 bloqueos en 5 min (misma IP)-->
+  <rule id="130031" level="12" frequency="10" timeframe="300">
+    <if_matched_sid>130030</if_matched_sid>
+    <same_source_ip/>
+    <description>WatchGuard - Possible brute force: 10+ blocked failed logins from same IP in 5 minutes</description>
+    <group>watchguard,authentication,bruteforce</group>
+  </rule>
+
+  <!--VPN: DENY etiquetado por policy IKEv2-->
+  <rule id="130040" level="0" noalert="1">
+    <if_sid>130002</if_sid>
+    <field name="policy">VPN IKEv2-00</field>
+    <description>WatchGuard - VPN IKEv2 tagged DENY (3000-0148)</description>
+    <group>watchguard,vpn,ikev2,deny</group>
+  </rule>
+
+   <!--VPN: DENY AppControl etiquetado por policy DMC-VPN-KPC03-->
+  <rule id="130041" level="7">
+    <if_sid>130010</if_sid>
+    <field name="policy">DMC-VPN-KPC03-00</field>
+    <description>WatchGuard - DMC-VPN tagged DENY (3000-0149)</description>
+    <group>watchguard,vpn,dmc,deny</group>
+  </rule>
+
+  <!--Posible ataque a IKEv2: 10+ DENY en 5 min (misma IP)-->
+   <rule id="130044" level="12" frequency="10" timeframe="300">
+    <if_matched_sid>130040</if_matched_sid>
+    <same_source_ip/>
+    <description>WatchGuard - Possible VPN IKEv2 scan/bruteforce: 10+ DENY from same IP in 5 minutes</description>
+    <group>watchguard,vpn,ikev2,bruteforce</group>
+  </rule>
+
+  <!--Posible ataque a DMC-VPN-KPC03: 10+ DENY en 5 min (misma IP)-->
+  <rule id="130045" level="12" frequency="10" timeframe="300">
+    <if_matched_sid>130041</if_matched_sid>
+    <same_source_ip/>
+    <description>WatchGuard - Possible DMC-VPN-KPC03 scan/bruteforce: 10+ DENY from same IP in 5 minutes</description>
+    <group>watchguard,vpn,dmc,bruteforce</group>
+  </rule>
+
+   <!--ADMD: evento de autenticación (1100-xxxx) rescatado desde syslog genérico-->
+  <rule id="130060" level="6">
+    <if_sid>2501</if_sid>
+    <match>admd[</match>
+    <description>WatchGuard - ADMD authentication-related event (1100-xxxx)</description>
+    <group>watchguard,system,admd,authentication_failed</group>
+  </rule>
+
+</group>
+
+<group name="cisco,switch,local,">
+
+  <!--Switch: cambio de configuración-->
+  <rule id="130301" level="10">
+    <if_sid>4721</if_sid>
+    <description>Cisco Switch - Config change (elevated)</description>
+    <group>cisco,switch,config_change</group>
+  </rule>
+
+  <!--Switch: interfaz arriba/abajo (UPDOWN)-->
+  <rule id="130303" level="7">
+    <if_sid>4713</if_sid>
+    <regex>%LINK-3-UPDOWN|%LINEPROTO-5-UPDOWN</regex>
+    <description>Cisco Switch - Interface up/down (elevated)</description>
+    <group>cisco,switch,link</group>
+  </rule>
+
+  <!--Switch: flapping (5 cambios en 5 min)-->
+  <rule id="130304" level="12" frequency="5" timeframe="300">
+    <if_matched_sid>130303</if_matched_sid>
+    <description>Cisco Switch - Interface flapping (5 UPDOWN / 5 min)</description>
+    <group>cisco,switch,link,flapping</group>
+  </rule>
+
+  <!--Core1 (172.16.100.1): Smart Licensing-->
+  <rule id="130305" level="5">
+    <if_sid>4713</if_sid>
+    <srcip>172.16.100.1</srcip>
+    <match>%SMART_LIC-</match>
+    <description>Cisco CORE1 - Smart Licensing communication failed</description>
+    <group>cisco,switch,core,smart_lic</group>
+  </rule>
+
+   <!--Core_24P (172.16.100.3): Smart Licensing-->
+  <rule id="130315" level="5">
+    <if_sid>4713</if_sid>
+    <srcip>172.16.100.3</srcip>
+    <match>%SMART_LIC-</match>
+    <description>Cisco CORE_24P - Smart Licensing communication failed</description>
+    <group>cisco,switch,core,smart_lic</group>
+  </rule>
+
+   <!--Core1 (172.16.100.1): FED consistency checker-->
+  <rule id="130306" level="7">
+    <if_sid>4714</if_sid>
+    <srcip>172.16.100.1</srcip>
+    <match>%FED_CCK_ERRMSG-</match>
+    <description>Cisco CORE1 - FED consistency checker inconsistency</description>
+    <group>cisco,switch,core,consistency</group>
+  </rule>
+
+  <!--Core_24P (172.16.100.3): FED consistency checker-->
+  <rule id="130316" level="7">
+    <if_sid>4714</if_sid>
+    <srcip>172.16.100.3</srcip>
+    <match>%FED_CCK_ERRMSG-</match>
+    <description>Cisco CORE_24P - FED consistency checker inconsistency</description>
+    <group>cisco,switch,core,consistency</group>
+  </rule>
+
+</group>
+
+<group name="noise-reduction,local,">
+
+  <!--Ignorar: Wazuh server started-->
+  <rule id="502" level="0" noalert="1" overwrite="yes">
+    <description>Noise reduction - Ignore: Wazuh server started</description>
+  </rule>
+
+   <!--Ignorar: cambios de puertos escuchando-->
+  <rule id="533" level="0" noalert="1" overwrite="yes">
+    <description>Noise reduction - Ignore: Listened ports status changed</description>
+  </rule>
+</group>
