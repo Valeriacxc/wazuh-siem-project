@@ -26,3 +26,16 @@ Durante este proyecto se desarrollaron decoders y reglas personalizadas para int
 
 ## Autor
 Valeria Cofré
+## Evidencia del sistema
+
+![Dashboard](images/Captura%20de%20pantalla%202026-03-12%20170625.png)
+
+![Eventos](images/Captura%20de%20pantalla%202026-03-12%20170707.png)
+
+![Mapa](images/Captura%20de%20pantalla%202026-03-12%20170758.png)
+
+![Logs](images/Captura%20de%20pantalla%202026-03-12%20172343.png)
+
+![Overview](images/Captura%20de%20pantalla%202026-03-12%20174122.png)
+
+![Alertas](images/Captura%20de%20pantalla%202026-03-12%20174209.png)
