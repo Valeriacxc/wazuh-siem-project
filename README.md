@@ -28,12 +28,23 @@ Durante este proyecto se desarrollaron decoders y reglas personalizadas para int
 Valeria Cofré
 ## Evidencia del sistema
 
-![Dashboard](images/Captura%20de%20pantalla%202026-03-12%20170625.png)
+### Dashboard de Wazuh
+![Dashboard](images/dashboard.png)
 
-![Eventos](images/Captura%20de%20pantalla%202026-03-12%20170707.png)
+### Eventos detectados
+![Eventos](images/eventos.png)
 
-![Mapa](images/Captura%20de%20pantalla%202026-03-12%20170758.png)
+### Mapa de conexiones
+![Mapa](images/mapa.png)
 
+### Logs procesados
+![Logs](images/logs.png)
+
+### Vista general del sistema
+![Overview](images/overview.png)
+
+### Alertas enviadas (Telegram)
+![Alertas](images/alertas.png)
 ![Logs](images/Captura%20de%20pantalla%202026-03-12%20172343.png)
 
 ![Overview](images/Captura%20de%20pantalla%202026-03-12%20174122.png)
